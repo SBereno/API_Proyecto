@@ -9,19 +9,21 @@ mongoose
         throw err;
     });
 
-const userList = function(user, pass) {
+const userSignUp = function (user, pass) {
+    var newUser = {
+        Username: user,
+        Password: pass
+    };
     return UserModel
-        .findOne({$and: [{Username: user}, {Password: pass}]})
-        .exec()
-        .then((user) => {
-            return !!user;
-        })
-        .catch((err) => {
-            mongoose.connection.close();
-            throw err;
+        .insertMany(newUser, function(err, result) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(result);
+            }
         });
 };
 
 module.exports = {
-    userList
+    userSignUp
 };
