@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('../configs/config');
 
 const UserModel = require('../schemas/UserModel');
 const uri = 'mongodb+srv://admin:admin@bdm06-qrx5v.mongodb.net/Login?retryWrites=true&w=majority'
@@ -9,12 +11,30 @@ mongoose
         throw err;
     });
 
-const userList = function(user, pass) {
+const userLogin = function(user, pass) {
     return UserModel
         .findOne({$and: [{Username: user}, {Password: pass}]})
         .exec()
         .then((user) => {
-            return !!user;
+            const payload = {
+                check: true
+            };
+            const token = jwt.sign(payload, config.llave, {
+                expiresIn: 600
+            });
+            const correcto = {
+                mensaje: 'Autenticacion correcta',
+                token: token
+            };
+            const incorrecto = {
+                mensaje: 'Usuario o password incorrectos'
+            };
+            if (!!user) {
+                return correcto;
+            } else {
+                return incorrecto;
+            }
+            
         })
         .catch((err) => {
             mongoose.connection.close();
@@ -37,7 +57,15 @@ const userSignUp = function (user, pass) {
         });
 };
 
+const userDelete = function(userToDelete) {
+    UserModel.deleteOne({ Username: userToDelete }, function (err) {
+        if(err) throw err;
+        console.log('Operacion finalizada');
+    });
+};
+
 module.exports = {
-    userList,
-    userSignUp
+    userLogin,
+    userSignUp,
+    userDelete
 };
