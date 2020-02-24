@@ -22,6 +22,22 @@ const userList = function(user, pass) {
         });
 };
 
+const userSignUp = function (user, pass) {
+    var newUser = {
+        Username: user,
+        Password: pass
+    };
+    return UserModel
+        .insertMany(newUser, function(err, result) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(result);
+            }
+        });
+};
+
 module.exports = {
-    userList
+    userList,
+    userSignUp
 };
