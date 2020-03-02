@@ -12,8 +12,8 @@ const deleteAttempt = async function(req, res) {
     res.send(await userQueries.userDelete(req.body.name));
 };
 
-const getMyProfile = function(req, res) {
-    res.send(userQueries.myProfile(req.body.name));
+const getMyProfile = async function(req, res) {
+    res.send(await userQueries.myProfile(req.body.name));
 };
 
 const getUsersList = async function(req, res) {

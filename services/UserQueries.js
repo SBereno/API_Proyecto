@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../configs/config');
 
 const UserModel = require('../schemas/UserModel');
-const uri = 'mongodb+srv://admin:admin@bdm06-qrx5v.mongodb.net/Login?retryWrites=true&w=majority'
+const uri = 'mongodb+srv://' + config.atlasUsername + ':' + config.atlasPassword + '@bdm06-qrx5v.mongodb.net/Login?retryWrites=true&w=majority';
 
 mongoose
     .connect(uri,{useNewUrlParser: true, useUnifiedTopology: true})
@@ -34,7 +34,6 @@ const userLogin = function(user, pass) {
             } else {
                 return incorrecto;
             }
-            
         })
         .catch((err) => {
             mongoose.connection.close();
@@ -69,7 +68,7 @@ const userList = function() {
 };
 
 const myProfile = function(user) {
-    
+    return UserModel.find({Username: user}, {Username:1});
 };
 
 module.exports = {
