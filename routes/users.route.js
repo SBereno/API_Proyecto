@@ -6,9 +6,11 @@ const router = express.Router({ mergeParams: true });
 
 const usersController = require('../controllers/users.controller');
 
-router.route('/login').post(usersController.loginAttempt);
+router.route('/login').get(usersController.loginAttempt);
 
 router.route('/signup').post(usersController.signUp);
+
+router.route('/myProfile').get(usersController.getMyProfile);
 
 router.use((req, res, next) => {
     const token = req.headers['access-token'];
@@ -28,6 +30,8 @@ router.use((req, res, next) => {
     }
  });
 
-router.route('/delete').post(usersController.deleteAttempt);
+router.route('/list').get(usersController.getUsersList);
+
+router.route('/delete').delete(usersController.deleteAttempt);
 
 module.exports = router;

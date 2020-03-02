@@ -64,8 +64,18 @@ const userDelete = function(userToDelete) {
     });
 };
 
+const userList = function() {
+    return UserModel.find({}, {Username:1, _id:0});
+};
+
+const myProfile = function(user) {
+    
+};
+
 module.exports = {
     userLogin,
     userSignUp,
-    userDelete
+    userDelete,
+    userList,
+    myProfile
 };

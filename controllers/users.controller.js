@@ -8,12 +8,22 @@ const signUp = function(req, res) {
     res.send(userQueries.userSignUp(req.body.name, req.body.password))
 };
 
-const deleteAttempt = function(req, res) {
-    res.send(userQueries.userDelete(req.body.name));
+const deleteAttempt = async function(req, res) {
+    res.send(await userQueries.userDelete(req.body.name));
+};
+
+const getMyProfile = function(req, res) {
+    res.send(userQueries.myProfile(req.body.name));
+};
+
+const getUsersList = async function(req, res) {
+    res.send(await userQueries.userList());
 };
 
 module.exports = {
     loginAttempt,
     signUp,
-    deleteAttempt
+    deleteAttempt,
+    getMyProfile,
+    getUsersList
 };
