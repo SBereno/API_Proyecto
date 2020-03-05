@@ -17,7 +17,7 @@ const userLogin = function(user, pass) {
         .exec()
         .then((user) => {
             const payload = {
-                check: true
+                User: user
             };
             const token = jwt.sign(payload, config.llave, {
                 expiresIn: 600
