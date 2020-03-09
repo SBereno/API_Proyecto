@@ -71,10 +71,22 @@ const myProfile = function(user) {
     return UserModel.find({Username: user}, {Username:1});
 };
 
+const userUpdate = function(user, newUsername, newPassword) {
+    var newUser = {
+        Username: newUsername,
+        Password: newPassword
+    };
+    UserModel.updateOne({Username: user}, {$set: newUser}, function (err) {
+        if(err) throw err;
+        console.log('Operacion finalizada');
+    });
+};
+
 module.exports = {
     userLogin,
     userSignUp,
     userDelete,
     userList,
-    myProfile
+    myProfile, 
+    userUpdate
 };

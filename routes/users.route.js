@@ -34,4 +34,6 @@ router.route('/list').get(usersController.getUsersList);
 
 router.route('/delete').delete(usersController.deleteAttempt);
 
+router.route('/update').put(usersController.updateAttempt);
+
 module.exports = router;

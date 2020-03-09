@@ -12,6 +12,10 @@ const deleteAttempt = async function(req, res) {
     res.send(await userQueries.userDelete(req.body.name));
 };
 
+const updateAttempt = function(req, res) {
+    res.send(userQueries.userUpdate(req.body.name, req.body.newName, req.body.newPassword));
+};
+
 const getMyProfile = async function(req, res) {
     res.send(await userQueries.myProfile(req.body.name));
 };
@@ -25,5 +29,6 @@ module.exports = {
     signUp,
     deleteAttempt,
     getMyProfile,
-    getUsersList
+    getUsersList,
+    updateAttempt
 };
