@@ -64,11 +64,11 @@ const userDelete = function(userToDelete) {
 };
 
 const userList = function() {
-    return UserModel.find({}, {Username:1, _id:0});
+    return UserModel.find({}, {_id:0, Password:0});
 };
 
 const myProfile = function(user) {
-    return UserModel.find({Username: user}, {Username:1});
+    return UserModel.find({Username: user}, {_id:0, Password:0});
 };
 
 const userUpdate = function(user, newUsername, newPassword) {
