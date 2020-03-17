@@ -13,7 +13,7 @@ mongoose
 
 const userLogin = function(user, pass) {
     return UserModel
-        .findOne({$and: [{Username: user}, {Password: pass}]})
+        .findOne({$and: [{Username: user}, {Password: pass}]}, {Username:1})
         .exec()
         .then((user) => {
             const payload = {
