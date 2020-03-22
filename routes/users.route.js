@@ -12,6 +12,8 @@ router.route('/signup').post(usersController.signUp);
 
 router.route('/myProfile').get(usersController.getMyProfile);
 
+router.route('/list').get(usersController.getUsersList);
+
 router.use((req, res, next) => {
     const token = req.headers['access-token'];
     if (token) {
@@ -29,8 +31,6 @@ router.use((req, res, next) => {
       });
     }
  });
-
-router.route('/list').get(usersController.getUsersList);
 
 router.route('/delete').delete(usersController.deleteAttempt);
 

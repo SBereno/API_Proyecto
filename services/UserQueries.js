@@ -64,7 +64,7 @@ const userDelete = function(userToDelete) {
 };
 
 const userList = function() {
-    return UserModel.find({}, {_id:0, Password:0});
+    return UserModel.find({}, {Username:1, _id:0});
 };
 
 const myProfile = function(user) {
