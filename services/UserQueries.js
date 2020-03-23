@@ -91,9 +91,19 @@ const userUpdate = function(user, newUsername, newPassword) {
         Username: newUsername,
         Password: newPassword
     };
+
     UserModel.updateOne({Username: user}, {$set: newUser}, function (err) {
         if(err) throw err;
         console.log('Operacion finalizada');
+    });
+};
+
+const addGame = async function(username, game) {
+    var user = await UserModel.findOne({Username: username});
+    user.Games.push(game);
+    UserModel.updateOne({Username: username}, {$set: user}, function (err) {
+        if(err) throw err;
+        return user;
     });
 };
 
@@ -103,5 +113,6 @@ module.exports = {
     userDelete,
     userList,
     myProfile, 
-    userUpdate
+    userUpdate,
+    addGame
 };

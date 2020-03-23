@@ -5,7 +5,7 @@ const loginAttempt = async function(req, res) {
 };
 
 const signUp = async function(req, res) {
-    await userQueries.userSignUp(req.body.name, req.body.password, res)
+    await userQueries.userSignUp(req.body.name, req.body.password, res);
 };
 
 const deleteAttempt = async function(req, res) {
@@ -24,11 +24,16 @@ const getUsersList = async function(req, res) {
     res.send(await userQueries.userList());
 };
 
+const addGame = async function(req, res) {
+   res.send(await userQueries.addGame(req.body.name, req.body.game));
+};
+
 module.exports = {
     loginAttempt,
     signUp,
     deleteAttempt,
     getMyProfile,
     getUsersList,
-    updateAttempt
+    updateAttempt,
+    addGame
 };

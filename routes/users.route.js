@@ -14,6 +14,8 @@ router.route('/myProfile').get(usersController.getMyProfile);
 
 router.route('/list').get(usersController.getUsersList);
 
+router.route('/addGames').post(usersController.addGame);
+
 router.use((req, res, next) => {
     const token = req.headers['access-token'];
     if (token) {
