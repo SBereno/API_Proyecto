@@ -10,13 +10,14 @@ router.route('/login').post(usersController.loginAttempt);
 
 router.route('/signup').post(usersController.signUp);
 
-router.route('/myProfile').get(usersController.getMyProfile);
+router.route('/myProfile').post(usersController.getMyProfile);
 
 router.route('/list').get(usersController.getUsersList);
 
 router.route('/addGames').post(usersController.addGame);
 
 router.use((req, res, next) => {
+    console.log(req);
     const token = req.headers['access-token'];
     if (token) {
       jwt.verify(token, config.llave, (err, decoded) => {      
