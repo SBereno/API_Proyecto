@@ -41,19 +41,34 @@ const userLogin = function(user, pass) {
         });
 };
 
-const userSignUp = function (user, pass) {
-    var newUser = {
-        Username: user,
-        Password: pass
-    };
-    return UserModel
-        .insertMany(newUser, function(err, result) {
-            if (err) {
-                throw err;
-            } else {
+const userSignUp = function (username, pass, res) {
+    UserModel.find({Username: username})
+    .exec()
+    .then(user => {
+        if (user.length >= 1) {
+            return res.status(409).json({
+                mensaje: "Usuario ya existe"
+            });
+        } else {
+            const newUser = new UserModel({
+                Username : username,
+                Password : pass
+            });
+            newUser.save()
+            .then(result => {
                 console.log(result);
-            }
+                return res.status(201).json({
+                    mensaje: "Usuario registrado"
+                });
+            })
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        return res.status(500).json({
+            error: err
         });
+    })
 };
 
 const userDelete = function(userToDelete) {

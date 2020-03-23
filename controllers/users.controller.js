@@ -5,7 +5,7 @@ const loginAttempt = async function(req, res) {
 };
 
 const signUp = async function(req, res) {
-    res.send(await userQueries.userSignUp(req.body.name, req.body.password))
+    await userQueries.userSignUp(req.body.name, req.body.password, res)
 };
 
 const deleteAttempt = async function(req, res) {
