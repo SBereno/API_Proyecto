@@ -33,7 +33,7 @@ const deleteGame = async function(req, res) {
 };
 
 const updateGame = async function(req, res) {
-    await userQueries.updateGame(req.body.name, req.body.game, res);
+    await userQueries.updateGame(req.body.name, req.body.oldName, req.body.game, res);
 };
 
 module.exports = {

@@ -117,8 +117,8 @@ const deleteGame = async function(username, gamename, res) {
     });
 };
 
-const updateGame = async function(username, game, res) {
-    UserModel.updateOne({Username: username, 'Games.Name': game.Name}, {$set: {"Games.$": game}}, function (err) {
+const updateGame = async function(username, oldName, game, res) {
+    UserModel.updateOne({Username: username, 'Games.Name': oldName}, {$set: {"Games.$": game}}, function (err) {
         if(err) throw err;
         console.log('Operacion finalizada');
         return res.status(200).json({
