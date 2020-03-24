@@ -29,7 +29,7 @@ const addGame = async function(req, res) {
 };
 
 const deleteGame = async function(req, res) {
-    res.send(await userQueries.deleteGame(req.body.name, req.body.gamename));
+    await userQueries.deleteGame(req.body.name, req.body.gamename, res);
 };
 
 module.exports = {
