@@ -107,6 +107,13 @@ const addGame = async function(username, game) {
     });
 };
 
+const deleteGame = async function(username, gamename) {
+    UserModel.updateOne({Username: username}, {$pull: {"Games" : {Name: gamename}}}, function(err) {
+        if(err) throw err;
+        console.log('Operacion finalizada');
+    });
+};
+
 module.exports = {
     userLogin,
     userSignUp,
@@ -114,5 +121,6 @@ module.exports = {
     userList,
     myProfile, 
     userUpdate,
-    addGame
+    addGame,
+    deleteGame
 };

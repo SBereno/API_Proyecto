@@ -28,6 +28,10 @@ const addGame = async function(req, res) {
    res.send(await userQueries.addGame(req.body.name, req.body.game));
 };
 
+const deleteGame = async function(req, res) {
+    res.send(await userQueries.deleteGame(req.body.name, req.body.gamename));
+};
+
 module.exports = {
     loginAttempt,
     signUp,
@@ -35,5 +39,6 @@ module.exports = {
     getMyProfile,
     getUsersList,
     updateAttempt,
-    addGame
+    addGame,
+    deleteGame
 };
