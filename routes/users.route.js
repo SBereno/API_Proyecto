@@ -18,6 +18,8 @@ router.route('/addGames').post(usersController.addGame);
 
 router.route('/deleteGames').delete(usersController.deleteGame);
 
+router.route('/updateGames').put(usersController.updateGame);
+
 router.use((req, res, next) => {
     console.log(req);
     const token = req.headers['access-token'];
