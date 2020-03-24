@@ -111,16 +111,19 @@ const deleteGame = async function(username, gamename, res) {
     UserModel.updateOne({Username: username}, {$pull: {"Games" : {Name: gamename}}}, function(err) {
         if(err) throw err;
         console.log('Operacion finalizada');
-        return res.status(201).json({
+        return res.status(200).json({
             mensaje: "Operacion finalizada"
         });
     });
 };
 
-const updateGame = async function(username, game) {
+const updateGame = async function(username, game, res) {
     UserModel.updateOne({Username: username, 'Games.Name': game.Name}, {$set: {"Games.$": game}}, function (err) {
         if(err) throw err;
         console.log('Operacion finalizada');
+        return res.status(200).json({
+            mensaje: "Operacion finalizada"
+        });
     });
 };
 
