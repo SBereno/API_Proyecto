@@ -13,45 +13,58 @@ mongoose
         throw err;
     });
 
+//Metode de login
 const userLogin = async function(user, pass) {
+    const incorrecto = {
+        mensaje: 'Usuario o password incorrectos'
+    };
+    //Primer es busca l'usuari amb qui es vol fer el login
     var usuario = await UserModel.findOne({ Username: user }).exec();
-    if(bcrypt.compareSync(pass, usuario.Password)) {
-        const payload = {
-            User: user
-        };
-        const token = jwt.sign(payload, config.llave, {
-            expiresIn: 600
-        });
-        const correcto = {
-            mensaje: 'Autenticacion correcta',
-            token: token
-        };
-        const incorrecto = {
-            mensaje: 'Usuario o password incorrectos'
-        };
-        if (!!usuario) {
+    //Es compara la contrasenya de l'usuari existent amb la rebuda des de el login
+    if(!!usuario) {
+        if(bcrypt.compareSync(pass, usuario.Password)) {
+            //En cas de ser correcte, es genera el token
+            const payload = {
+                User: user
+            };
+            const token = jwt.sign(payload, config.llave, {
+                expiresIn: 600
+            });
+            const correcto = {
+                mensaje: 'Autenticacion correcta',
+                token: token
+            };
             return correcto;
         } else {
+            //Si les contrasenyes no son iguals o no es troba l'usuari, retorna 'incorrecto'
             return incorrecto;
         }
-    } 
+    } else {
+        return incorrecto;
+    }
 };
 
+//Metode de registre
 const userSignUp = function (username, pass, res) {
+    //Primer es comprova que l'usuari no existeixi a la base de dades
     UserModel.find({Username: username})
     .exec()
     .then(user => {
+        //Si existeix, retorna el missatge 'Usuario ya existe'
         if (user.length >= 1) {
             return res.status(409).json({
                 mensaje: "Usuario ya existe"
             });
         } else {
+            //Si no existeix, es genera el hash mitjançant la password rebuda del client y s'indica el temps que trigarà en calcular-lo (variable saltRounds)
             const hash = bcrypt.hashSync(pass, saltRounds);
             console.log(hash);
+            //Es genera un usuari amb el hash com a password
             const newUser = new UserModel({
                 Username : username,
                 Password : hash
             });
+            //I es guarda l'usuari a la base de dades
             newUser.save()
             .then(result => {
                 console.log(result);
