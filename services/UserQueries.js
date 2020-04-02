@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../configs/config');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const UserModel = require('../schemas/UserModel');
 const uri = 'mongodb+srv://' + config.atlasUsername + ':' + config.atlasPassword + '@bdm06-qrx5v.mongodb.net/Login?retryWrites=true&w=majority';
@@ -11,34 +13,28 @@ mongoose
         throw err;
     });
 
-const userLogin = function(user, pass) {
-    return UserModel
-        .findOne({$and: [{Username: user}, {Password: pass}]}, {Username:1})
-        .exec()
-        .then((user) => {
-            const payload = {
-                User: user
-            };
-            const token = jwt.sign(payload, config.llave, {
-                expiresIn: 600
-            });
-            const correcto = {
-                mensaje: 'Autenticacion correcta',
-                token: token
-            };
-            const incorrecto = {
-                mensaje: 'Usuario o password incorrectos'
-            };
-            if (!!user) {
-                return correcto;
-            } else {
-                return incorrecto;
-            }
-        })
-        .catch((err) => {
-            mongoose.connection.close();
-            throw err;
+const userLogin = async function(user, pass) {
+    var usuario = await UserModel.findOne({ Username: user }).exec();
+    if(bcrypt.compareSync(pass, usuario.Password)) {
+        const payload = {
+            User: user
+        };
+        const token = jwt.sign(payload, config.llave, {
+            expiresIn: 600
         });
+        const correcto = {
+            mensaje: 'Autenticacion correcta',
+            token: token
+        };
+        const incorrecto = {
+            mensaje: 'Usuario o password incorrectos'
+        };
+        if (!!usuario) {
+            return correcto;
+        } else {
+            return incorrecto;
+        }
+    } 
 };
 
 const userSignUp = function (username, pass, res) {
@@ -50,9 +46,11 @@ const userSignUp = function (username, pass, res) {
                 mensaje: "Usuario ya existe"
             });
         } else {
+            const hash = bcrypt.hashSync(pass, saltRounds);
+            console.log(hash);
             const newUser = new UserModel({
                 Username : username,
-                Password : pass
+                Password : hash
             });
             newUser.save()
             .then(result => {
