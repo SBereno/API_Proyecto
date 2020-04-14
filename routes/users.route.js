@@ -21,23 +21,27 @@ router.route('/deleteGames').delete(usersController.deleteGame);
 router.route('/updateGames').put(usersController.updateGame);
 
 router.use((req, res, next) => {
-    console.log(req);
-    const token = req.headers['access-token'];
-    if (token) {
-      jwt.verify(token, config.llave, (err, decoded) => {      
-        if (err) {
-          return res.json({ mensaje: 'Token inválida' });    
-        } else {
-          req.decoded = decoded;    
-          next();
-        }
-      });
+  //Es demana el header 'access-token' a l'usuari
+  const token = req.headers['access-token'];
+  //Si s'envia, es comproba que sigui valid
+  if (token) {
+    jwt.verify(token, config.llave, (err, decoded) => {      
+    //En cas de no ser valida (han passat 10 minuts), es retorna 'Token invalida'
+    if (err) {
+      return res.json({ mensaje: 'Token inválida' });    
     } else {
-      res.send({ 
-          mensaje: 'Token no proveída.' 
-      });
+      //En canvi, si es valida, es guarda la request per a utilitzarla en altres rutes
+      req.decoded = decoded;    
+      next();
     }
- });
+    });
+  //En cas de no enviar token ens retorna 'Token no proveida' 
+  } else {
+    res.send({ 
+    mensaje: 'Token no proveída.' 
+    });
+  }
+});
 
 router.route('/delete').delete(usersController.deleteAttempt);
 
