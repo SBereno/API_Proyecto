@@ -1,5 +1,5 @@
 module.exports = {
-    llave: "AMS2",
+    llave: "tuLlaveParaEncriptar",
     atlasUsername: "tuUsuario",
     atlasPassword: "tuPassword"
 }
